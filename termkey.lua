@@ -112,7 +112,7 @@ function M.TermKeyAbstract(term, flags)
 end
 
 function M.TermKeyKey()
-  return ffi.new(termkeykey_t)
+  return termkeykey_t()
 end
 
 M.Flags = {
