@@ -6,6 +6,9 @@ local C = ffi.load('libtermkey')
 
 local M = {}
 
+local termkeymousevent_boxed_t = ffi.typeof('TermKeyMouseEvent[1]')
+local int_boxed_t = ffi.typeof('int[1]')
+
 local index = {
 
   start=C.termkey_start,
@@ -44,7 +47,21 @@ local index = {
 
   keyname2sym=C.termkey_keyname2sym,
 
-  interpret_mouse=C.termkey_interpret_mouse,
+  interpret_mouse=function(self, key)
+    local event = termkeymousevent_boxed_t()
+    local button = int_boxed_t()
+    local line = int_boxed_t()
+    local col = int_boxed_t()
+    local result = C.termkey_interpret_mouse (
+      self,
+      key,
+      event,
+      button,
+      line,
+      col
+    )
+    return result, event[0], button[0], line[0], col[0]
+  end,
 
   interpret_position=C.termkey_interpret_position,
 
