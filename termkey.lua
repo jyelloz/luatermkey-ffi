@@ -73,8 +73,18 @@ local mt = {
   __index=index,
 }
 
+local termkeykey_index = {
+  text=function(self)
+    return ffi.string(self.utf8)
+  end
+}
+
+local termkeykey_mt = {
+  __index=termkeykey_index,
+}
+
 local termkey_t = ffi.metatype(ffi.typeof('TermKey'), mt)
-local termkeykey_t = ffi.typeof('TermKeyKey')
+local termkeykey_t = ffi.metatype(ffi.typeof('TermKeyKey'), termkeykey_mt)
 
 function M.TermKey(fd, flags)
   return ffi.gc(C.termkey_new(fd, flags), termkey_t_gc)
