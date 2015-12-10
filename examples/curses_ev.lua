@@ -1,5 +1,6 @@
 local os = require('os')
 local curses = require('curses')
+local signal = require('posix.signal')
 local ev = require('ev')
 local termkey = require('termkey')
 
@@ -9,6 +10,21 @@ local misc = require('misc')
 -- and curses to draw to the screen.
 
 os.setlocale(nil, nil)
+
+local loop = ev.Loop.default
+
+local function quit()
+  loop:unloop()
+  curses.endwin()
+end
+
+local sigint = ev.Signal.new(
+  function(loop, sig, revents)
+    quit()
+    print("handled SIGINT")
+  end,
+  signal.SIGINT
+)
 
 local tk = termkey.TermKey(0, 0)
 local stdscr = curses.initscr()
@@ -46,19 +62,15 @@ end
 
 local timer = ev.Timer.new(timer_closure(), 0.5, 0.5)
 
-local function quit(loop, io)
-  io:stop(loop)
-  timer:stop(loop)
-end
-
 local function handle_mouse(key, loop, io)
 
 end
 
 local function handle_unicode(key, loop, io)
   local text = key:text()
-  if text == 'q' then
-    quit(loop, io)
+  if text == 'q' or text == 'Q' then
+    quit()
+    print(string.format('handled key \'%s\'', text))
   end
 end
 
@@ -83,13 +95,10 @@ end
 
 local stdin = ev.IO.new(on_input, 0, ev.READ)
 
-local loop = ev.Loop.default
-
+sigint:start(loop)
 stdin:start(loop)
 timer:start(loop)
 
 misc.MouseEnable(1002)
 pcall(function() loop:loop() end)
 misc.MouseDisable(1002)
-
-curses.endwin()
