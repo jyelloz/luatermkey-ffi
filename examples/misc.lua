@@ -1,11 +1,13 @@
 local M = {}
 
 function M.MouseEnable(mode)
-  print(string.format('\027[?%dh', mode))
+  io.write(string.format('\027[?%dh', mode))
+  io.flush()
 end
 
 function M.MouseDisable(mode)
-  print(string.format('\027[?%dl', mode))
+  io.write(string.format('\027[?%dl', mode))
+  io.flush()
 end
 
 function M.cycle(n)
