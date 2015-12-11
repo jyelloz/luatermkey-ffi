@@ -1,7 +1,7 @@
 local termkey = require('termkey')
 
 describe(
-  "TermKey type",
+  "TermKey",
   function()
 
     local term
@@ -22,7 +22,7 @@ describe(
     )
 
     describe(
-      "TermKey read",
+      "READ",
       function()
 
         local keychar = 'a'
