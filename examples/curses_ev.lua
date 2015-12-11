@@ -76,8 +76,10 @@ end
 
 local function on_input(loop, io, revents)
 
+  tk:advisereadable()
+
   local key = termkey.TermKeyKey()
-  local result = tk:waitkey(key)
+  local result = tk:getkey(key)
 
   if result == termkey.Result.KEY then
 
