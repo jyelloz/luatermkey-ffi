@@ -77,7 +77,7 @@ local index = {
   has_flags=function(self, flag, ...)
     local flags = bit.bor(flag, ...)
     return bit.band(self:get_flags(), flags) == flags
-  end
+  end,
 
 }
 
@@ -91,9 +91,16 @@ local mt = {
 }
 
 local termkeykey_index = {
+
   text=function(self)
     return ffi.string(self.utf8)
-  end
+  end,
+
+  has_mods=function(self, mod, ...)
+    local mods = bit.bor(mod, ...)
+    return bit.band(self.modifiers, mods) == mods
+  end,
+
 }
 
 local termkeykey_mt = {
@@ -151,7 +158,7 @@ M.MouseEvent = {
   RELEASE=C.TERMKEY_MOUSE_RELEASE,
 }
 
-M.Method = {
+M.Mod = {
   SHIFT=C.TERMKEY_KEYMOD_SHIFT,
   ALT=C.TERMKEY_KEYMOD_ALT,
   CTRL=C.TERMKEY_KEYMOD_CTRL,
