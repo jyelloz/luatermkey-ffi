@@ -62,11 +62,11 @@ end
 
 local timer = ev.Timer.new(timer_closure(), 0.5, 0.5)
 
-local function handle_mouse(key, loop, io)
+local function handle_mouse(key)
 
 end
 
-local function handle_unicode(key, loop, io)
+local function handle_unicode(key)
   local text = key:text()
   if text == 'q' or text == 'Q' then
     quit()
@@ -86,9 +86,9 @@ local function on_input(loop, io, revents)
     local key_type = key.type
 
     if key_type == termkey.Type.UNICODE then
-      handle_unicode(key, loop, io)
+      handle_unicode(key)
     elseif key_type == termkey.Type.MOUSE then
-      handle_mouse(key, loop, io)
+      handle_mouse(key)
     end
 
   end
