@@ -47,6 +47,7 @@ local function draw()
   stdscr:clear()
   stdscr:border()
   stdscr:mvaddstr(0, 2, ' Window Title ')
+  stdscr:mvaddch(0, curses.cols() - 3, curses.ACS_BULLET)
   stdscr:refresh()
 end
 
@@ -64,6 +65,24 @@ end
 local timer = ev.Timer.new(timer_closure(), 0.5, 0.5)
 
 local function handle_mouse(key)
+
+  local close_y = 1
+  local close_x = curses.cols() - 2
+
+  local _, event, button, line, col = tk:interpret_mouse(key)
+
+  if event ~= termkey.MouseEvent.PRESS then
+    return
+  end
+
+  if button ~= 1 then
+    return
+  end
+
+  if line == close_y and col == close_x then
+    quit()
+    print('handled window close')
+  end
 
 end
 
