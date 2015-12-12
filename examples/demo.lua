@@ -20,11 +20,11 @@ local function main()
       if key_type == termkey.Type.MOUSE then
         local _, event, button, line, col = tk:interpret_mouse(key)
         if event == termkey.MouseEvent.PRESS then
-          print(string.format('mouse press (%d, %d)', line, col))
+          print(('mouse#%d press (%d, %d)'):format(button, line, col))
         elseif event == termkey.MouseEvent.RELEASE then
-          print(string.format('mouse release (%d, %d)', line, col))
+          print(('mouse#%d release (%d, %d)'):format(button, line, col))
         elseif event == termkey.MouseEvent.DRAG then
-          print(string.format('mouse drag (%d, %d)', line, col))
+          print(('mouse#%d drag (%d, %d)'):format(button, line, col))
         end
       elseif key_type == termkey.Type.UNICODE then
         local text = key:text()
