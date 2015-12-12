@@ -36,6 +36,7 @@ curses.init_pair(2, curses.COLOR_RED, curses.COLOR_YELLOW)
 curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_BLUE)
 curses.init_pair(4, curses.COLOR_WHITE, curses.COLOR_MAGENTA)
 
+curses.curs_set(0)
 curses.nl(false)
 
 stdscr:clear()
