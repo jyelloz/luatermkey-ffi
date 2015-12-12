@@ -1,7 +1,7 @@
 local termkey = require('termkey')
 local misc = require('misc')
 
-local tk = termkey.TermKey(0, 0)
+local tk = termkey.TermKey(0, termkey.Flags.CTRLC)
 
 local function main()
   while true do
@@ -30,6 +30,10 @@ local function main()
         local text = key:text()
         print('unicode event ' .. text)
         if text == 'q' then
+          break
+        elseif text == 'c' and key:has_mods(termkey.Mod.CTRL) then
+          local keystring = tk:format_key(key, 0)
+          print(('quitting due to key %q'):format(keystring))
           break
         end
       elseif key_type == termkey.Type.KEYSYM then
