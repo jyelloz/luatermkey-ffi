@@ -99,6 +99,49 @@ describe(
       end
     )
 
+    describe(
+      "FORMAT",
+      function()
+
+        local keychar = 'a'
+        local keychar_byte = keychar:byte()
+
+        local ascii_ctrl_byte = 0x03
+        local ascii_ctrl = string.char(ascii_ctrl_byte)
+
+
+        it(
+          "ensures the key event from 'a' is printable",
+          function()
+
+            term:push_bytes(keychar, #keychar)
+            term:advisereadable()
+            term:getkey_force(key)
+
+            local keystring = term:format_key(key, termkey.Format.VIM)
+
+            assert.equals('a', keystring)
+
+          end
+        )
+
+        it(
+          "ensures the key event from '<C-c> is printable",
+          function()
+
+            term:push_bytes(ascii_ctrl, #ascii_ctrl)
+            term:advisereadable()
+            term:getkey_force(key)
+
+            local keystring = term:format_key(key, termkey.Format.VIM)
+
+            assert.equals('<C-c>', keystring)
+
+          end
+        )
+
+      end
+    )
+
   end
 )
-

@@ -8,6 +8,7 @@ local M = {}
 
 local termkeymousevent_boxed_t = ffi.typeof('TermKeyMouseEvent[1]')
 local int_boxed_t = ffi.typeof('int[1]')
+local string_50_t = ffi.typeof('char[50]')
 
 local index = {
 
@@ -71,6 +72,14 @@ local index = {
 
   strfkey=C.termkey_strfkey,
   strpkey=C.termkey_strpkey,
+
+  format_key=function(self, key, format)
+    local buffer = string_50_t()
+    return ffi.string(
+      buffer,
+      self:strfkey(buffer, 50, key, format)
+    )
+  end,
 
   keycmp=C.termkey_keycmp,
 
